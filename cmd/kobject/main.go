@@ -8,7 +8,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/mdlayher/kobject"
+	"github.com/anpep/kobject"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-module github.com/mdlayher/kobject
+module github.com/anpep/kobject
 
 go 1.12
 
