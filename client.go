@@ -15,6 +15,8 @@ import (
 	"os"
 	"sync"
 	"time"
+
+	"github.com/mdlayher/netlink"
 )
 
 // A Client provides access to Linux kobject userspace events. Clients are safe
@@ -103,11 +105,31 @@ func (c *Client) SetDeadline(t time.Time) error {
 	return conn.SetDeadline(t)
 }
 
+func (c *Client) SetReadBuffer(bytes int) error {
+	conn, ok := c.rc.(conn)
+	if !ok {
+		panicf("kobject: BUG: read buffer resize not supported on internal conn type: %#v", c.rc)
+	}
+
+	return conn.SetReadBuffer(bytes)
+}
+
+func (c *Client) SetOption(option netlink.ConnOption, enable bool) error {
+	conn, ok := c.rc.(conn)
+	if !ok {
+		panicf("kobject: BUG: connection options not supported on internal conn type: %#v", c.rc)
+	}
+
+	return conn.SetOption(option, enable)
+}
+
 // A conn is the full set of required functionality for an internal type to
 // expose via Client.
 type conn interface {
 	tryReadCloser
 	SetDeadline(t time.Time) error
+	SetReadBuffer(bytes int) error
+	SetOption(option netlink.ConnOption, enable bool) error
 }
 
 type tryReadCloser interface {
