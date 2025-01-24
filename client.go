@@ -117,7 +117,7 @@ func (c *Client) SetReadBuffer(bytes int) error {
 func (c *Client) SetOption(option netlink.ConnOption, enable bool) error {
 	conn, ok := c.rc.(conn)
 	if !ok {
-		panicf("kobject: BUG: connection options not supported on internal conn type: %#v", c.rc)
+		panicf("kobject: BUG: socket options not supported on internal conn type: %#v", c.rc)
 	}
 
 	return conn.SetOption(option, enable)
