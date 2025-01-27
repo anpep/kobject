@@ -26,7 +26,7 @@ type Event struct {
 	Action     Action
 	DevicePath string
 	Subsystem  string
-	Sequence   int
+	Sequence   uint64
 
 	// Values contains arbitrary key/value pairs which are not present in
 	// all Events.
@@ -54,7 +54,7 @@ func parseEvent(fields [][]byte) (*Event, error) {
 		case "SUBSYSTEM":
 			e.Subsystem = kv[1]
 		case "SEQNUM":
-			v, err := strconv.Atoi(kv[1])
+			v, err := strconv.ParseUint(kv[1], 10, 64)
 			if err != nil {
 				return nil, err
 			}
